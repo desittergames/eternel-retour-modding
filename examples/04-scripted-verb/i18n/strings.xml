@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Merged into the game's text BY KEY, so you supply only your own strings. Without this the item would
+         draw with a blank or raw-id name. -->
+    <string name="item.shock_line.name">Shock Line</string>
+    <string name="item.shock_line.desc">Slain foes erupt in a line of blasts</string>
+</resources>

@@ -1,0 +1,11 @@
+biomes:
+  wasteland:
+    phases:
+      - until: 0.5
+        label: "Skirmish"
+        intensity: 0.6
+        mix: { skirmisher: 4, circler: 4, grunt: 2 }
+      - until: 1.0
+        label: "Encircled"
+        intensity: 1.0
+        mix: { skirmisher: 5, circler: 5, grunt: 3 }

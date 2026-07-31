@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="item.shock_line.name">Ligne de Choc</string>
+    <string name="item.shock_line.desc">Les ennemis tués explosent en ligne</string>
+</resources>

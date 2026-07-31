@@ -1,0 +1,28 @@
+# `behavior:` chooses how a creep MOVES once it has aggro:
+#   CHASER  (default) walks straight at you
+#   KITER   holds preferredRange, backing off when you close
+#   ORBITER closes, then circles instead of converging
+#
+# A stand-off creep needs a RANGED attack. Give it a melee attack with chargeSpeed (like `claw`) and it will
+# lunge at you regardless — charging is what that attack does. Give it one whose range is shorter than
+# preferredRange and it will hold position and never fire. The game warns about both in Options -> Mods.
+creeps:
+  skirmisher:
+    maxHealth: 30
+    chaseSpeed: 3.4
+    behavior: KITER
+    preferredRange: 5.0
+    attackRange: 8.0                          # matches `spit`'s reach, so it can shoot from where it stands
+    scale: 1.2
+    xpValue: 3
+    attacks: [{ attack: spit, priority: 1 }]
+
+  circler:
+    maxHealth: 40
+    chaseSpeed: 3.6
+    behavior: ORBITER
+    preferredRange: 5.0
+    attackRange: 8.0
+    scale: 1.2
+    xpValue: 3
+    attacks: [{ attack: spit, priority: 1 }]

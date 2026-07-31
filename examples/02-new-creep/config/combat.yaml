@@ -1,0 +1,10 @@
+# A key the game has never seen ADDS content rather than changing it. `blob` is a brand-new creep; nothing
+# about the existing roster is touched.
+creeps:
+  blob:
+    maxHealth: 30
+    chaseSpeed: 2.4
+    attackRange: 1.5
+    scale: 1.2
+    xpValue: 3
+    attacks: [{ attack: claw, priority: 1 }]   # `claw` is a base-game attack; you can reference any of them

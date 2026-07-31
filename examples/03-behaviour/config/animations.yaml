@@ -1,0 +1,17 @@
+entities:
+  creep_skirmisher:
+    sheet: { image: "mods/example/skirmisher.png", cellWidth: 32, cellHeight: 32 }
+    clips:
+      idle:   { from: 0,  to: 7,  fps: 6,  loop: true }
+      walk:   { from: 8,  to: 15, fps: 10, loop: true }
+      attack: { from: 16, to: 23, fps: 14, loop: false }
+      dead:   { from: 24, to: 31, fps: 12, loop: false }
+    actions: { IDLE: "idle", MOVE: "walk", WINDUP: "attack", ATTACK: "attack", DEAD: "dead" }
+  creep_circler:
+    sheet: { image: "mods/example/circler.png", cellWidth: 32, cellHeight: 32 }
+    clips:
+      idle:   { from: 0,  to: 7,  fps: 6,  loop: true }
+      walk:   { from: 8,  to: 15, fps: 10, loop: true }
+      attack: { from: 16, to: 23, fps: 14, loop: false }
+      dead:   { from: 24, to: 31, fps: 12, loop: false }
+    actions: { IDLE: "idle", MOVE: "walk", WINDUP: "attack", ATTACK: "attack", DEAD: "dead" }

@@ -1,0 +1,13 @@
+# Make it actually appear. `phases` is a LIST, and lists REPLACE — so this deliberately redefines the
+# wasteland's wave plan rather than adding to it.
+biomes:
+  wasteland:
+    phases:
+      - until: 0.5
+        label: "Blob Tide"
+        intensity: 0.6
+        mix: { blob: 6, grunt: 2 }
+      - until: 1.0
+        label: "More Blobs"
+        intensity: 1.0
+        mix: { blob: 8, grunt: 3 }

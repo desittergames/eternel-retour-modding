@@ -1,0 +1,8 @@
+# `script` is "<this mod's folder name>:<function name>". Triggers: KILL, HIT, CRIT.
+items:
+  shock_line:
+    icon: "shockwave"                # any base-game icon id
+    rarity: COMMON
+    draftWeight: 3.0                 # > 1 makes it show up in shops more often — handy while testing
+    hooks:
+      - { effect: SCRIPT, trigger: KILL, script: "04-scripted-verb:shockLine", damage: 60 }

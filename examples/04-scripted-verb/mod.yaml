@@ -1,0 +1,3 @@
+name: "Shock Line"
+version: "1.0.0"
+description: "An item whose on-kill effect is written in Lua, with its own name and visuals."

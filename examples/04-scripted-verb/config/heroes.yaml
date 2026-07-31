@@ -1,0 +1,7 @@
+# Hand yourself the item at run start so testing doesn't depend on shop luck.
+#
+# `startItems+` APPENDS. Plain `startItems:` would REPLACE the hero's existing starting items — wiping content
+# you never meant to touch, and making this mod incompatible with any other that extends the same list.
+heroes:
+  vanguard:
+    startItems+: [shock_line]

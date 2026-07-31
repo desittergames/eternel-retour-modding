@@ -1,0 +1,5 @@
+# Config is MERGED into the game's, not swapped for it. Setting one field leaves everything else about the
+# grunt — its art, speed, attacks, drops — exactly as it was.
+creeps:
+  grunt:
+    scale: 3.0

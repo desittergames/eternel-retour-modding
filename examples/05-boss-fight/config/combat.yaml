@@ -1,0 +1,27 @@
+# Bosses normally run a built-in script. Author `phases:` and yours runs instead: a cycle of phases, each
+# firing its actions on INDEPENDENT timers, looping back to the first when the last ends.
+#
+# Actions: RING, RING_AT_PLAYER, FAN, RADIAL, TWIN_GUNS, ADDS
+#
+# `delay` staggers an action's first firing. Without it everything in a phase fires on the same beat, which is
+# the difference between a pattern and a metronome.
+bossVariants:
+  mech:
+    phases:
+      - label: "Bombardment"
+        duration: "6s"
+        actions:
+          - { action: RING_AT_PLAYER, every: "1400ms" }
+          - { action: RING, every: "900ms", count: 2, delay: "400ms" }
+
+      - label: "Suppress"
+        duration: "5s"
+        actions:
+          - { action: FAN, every: "700ms" }
+          - { action: RADIAL, every: "2500ms", delay: "1200ms" }
+
+      - label: "Swarm"
+        duration: "7s"
+        actions:
+          - { action: ADDS, every: "2s", count: 5 }
+          - { action: FAN, every: "1500ms", delay: "800ms" }

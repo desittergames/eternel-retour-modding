@@ -1,0 +1,18 @@
+CC0 1.0 Universal — Public Domain Dedication
+
+The documentation and example mods in this repository are dedicated to the public domain.
+
+To the extent possible under law, DeSitter Games has waived all copyright and related or neighboring rights to
+the contents of this repository. You may copy, modify, distribute and use the examples, including for
+commercial purposes, without asking permission and without attribution.
+
+Full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+
+THIS DOES NOT APPLY TO THE GAME OR ITS ASSETS
+---------------------------------------------
+"L'Éternel Retour: Death Gamble", its code, and its bundled art and audio are NOT covered by this dedication
+and are not redistributable. This waiver covers only what is in this repository: the documentation, the
+example configuration and scripts, and the generated placeholder sprites.
+
+A mod you build must ship art and audio you have the right to distribute. Do not extract or redistribute the
+game's assets.
