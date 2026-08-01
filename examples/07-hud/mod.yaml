@@ -1,0 +1,3 @@
+name: "Damage Meter"
+version: "1.0.0"
+description: "A HUD readout drawn by a mod — the example for the client-side script API."

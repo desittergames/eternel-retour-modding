@@ -1,0 +1,4 @@
+# `startItems+` APPENDS. Plain `startItems:` would REPLACE the hero's existing items.
+heroes:
+  vanguard:
+    startItems+: [echo_swarm]

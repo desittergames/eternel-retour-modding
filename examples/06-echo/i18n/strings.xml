@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="item.echo_swarm.name">Echo of the Swarm</string>
+    <string name="item.echo_swarm.desc">Every fourth kill, the swarm answers</string>
+</resources>

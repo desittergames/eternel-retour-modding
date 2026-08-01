@@ -1,0 +1,8 @@
+# The hook is the same shape as example 04; what differs is what the script DOES with the world.
+items:
+  echo_swarm:
+    icon: "shockwave"
+    rarity: RARE
+    draftWeight: 3.0        # > 1 so it shows up while testing
+    hooks:
+      - { effect: SCRIPT, trigger: KILL, script: "06-echo:echo", damage: 0 }

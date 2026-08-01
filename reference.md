@@ -338,8 +338,47 @@ there are no live object handles, so a script can't hold on to game state betwee
 | `world.damageArea(x, y, radius, amount)` | Damage every enemy within `radius` of a point. `amount` defaults to `world.damage()`. |
 | `world.damage()` | This effect's damage, already scaled by the player's Power — so a scripted verb grows with the build. |
 | `world.fx(name, x, y, size)` | Play a one-shot visual effect. `name` is any animation entity — the game's, or one your mod ships. Cosmetic only, so a distant client may cull it. |
+| `world.nearestEnemy(x, y, radius)` | Find the closest live enemy within `radius`. Returns `x, y, distance` — or nothing if there is none, so `if not ex then return end` is the guard. |
+| `world.nearestPlayer(x, y)` | Find the closest player. Returns `x, y, distance` — or nothing when no player is alive. |
+| `world.countEnemies(x, y, radius)` | How many live enemies are within `radius` of a point. Cheap — use it to scale an effect with the size of the pack. |
+| `world.spawn(creepId, x, y)` | Spawn a creep archetype — the game's, or one your mod defines in `combat.yaml`. Returns false if no such id exists, or if the point is outside the level's spawnable area. |
+| `world.time()` | Seconds since the run started. Game time, so it does not advance while the game is paused. |
+| `world.random(n)` | A random number: `0..1` with no argument, or a whole `1..n` with one. **Seeded from the run**, so a restored checkpoint replays identically — always use this, never Lua's `math.random`. |
+| `world.flag(name)` | Remember that something happened, for the rest of the run. Saved with the run, so it survives a checkpoint restore. Prefix your mod's id to avoid clashing with another mod. |
+| `world.hasFlag(name)` | Whether `world.flag` set this name earlier in the run. |
+| `world.inc(name, by)` | Add to a run-long counter (`by` defaults to 1) and return its new value — the way to build an effect that grows the more it fires. |
+| `world.count(name)` | The current value of a `world.inc` counter, or 0. |
 | `world.log(message)` | Write to the console, prefixed `Mods[lua]:`. The only evidence that survives when an effect is off-screen — put one in early. |
+
+
+### HUD calls
+
+Available to scripts under `scripts/client/`, which run on **your own machine's renderer**
+rather than in the simulation. A host-shared mod can never contain one.
+
+Registration, while the script loads:
+
+| call | does |
+|---|---|
+| `hud.register(id, region, draw)` | Add a HUD element. `region` is one of `topLeft`, `topRight`, `bottomLeft`, `bottomRight`. `draw` is called each frame with a `ui` table. The player can toggle your element off, so never rely on it having run. |
+
+The `ui` table, inside a draw function. Coordinates are **relative to your element's own**
+**box**, growing down from its top-left — you never learn where that box sits on screen, which
+is what lets your element work on any resolution and stack rather than collide with another
+mod's.
+
+| call | does |
+|---|---|
+| `ui.text(x, y, text, color)` | Draw text. `color` is `"RRGGBB"`, or omit for the HUD default. |
+| `ui.rect(x, y, w, h, color)` | Draw a filled rectangle — a bar, a backing panel. |
+| `ui.width()` | Your element's width. Lay out against this, never against the screen. |
+| `ui.height()` | Your element's height. |
+| `ui.meter()` | The per-source damage/heal rows: `{ label, damage, heal }`, refreshed ~10 times a second. |
+| `ui.time()` | Seconds since the run started. |
 
 **Not available**, and not configurable: `io`, `os`, the filesystem, the network, processes,
 Java interop, `require` outside your own mod, per-frame callbacks, and any UI access.
 The interpreter is **Lua 5.2** — no `//` integer division and no bitwise operators (use `bit32`).
+`string.format` also **ignores float precision**: `%.1f` keeps the surrounding text but not the
+rounding, so `string.format("%.1f", 10.334)` gives `10.333999633789062`. Round it yourself with
+`math.floor(x * 10) / 10`.
