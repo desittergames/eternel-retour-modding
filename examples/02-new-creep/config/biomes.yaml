@@ -1,13 +1,18 @@
 # Make it actually appear. `phases` is a LIST, and lists REPLACE — so this deliberately redefines the
-# wasteland's wave plan rather than adding to it.
+# wasteland's wave plan rather than adding to it. `alive` is a target POPULATION (the director tops the field
+# back up to it), not a spawn rate; `refillBatch / refillEvery` is how fast it may do that.
 biomes:
   wasteland:
     phases:
       - until: 0.5
         label: "Blob Tide"
-        intensity: 0.6
+        alive: 30
+        refillEvery: "1s"
+        refillBatch: 3
         mix: { blob: 6, grunt: 2 }
       - until: 1.0
         label: "More Blobs"
-        intensity: 1.0
+        alive: 90
+        refillEvery: "0.7s"
+        refillBatch: 5
         mix: { blob: 8, grunt: 3 }

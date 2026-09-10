@@ -3,9 +3,13 @@ biomes:
     phases:
       - until: 0.5
         label: "Skirmish"
-        intensity: 0.6
+        alive: 30
+        refillEvery: "1s"
+        refillBatch: 3
         mix: { skirmisher: 4, circler: 4, grunt: 2 }
       - until: 1.0
         label: "Encircled"
-        intensity: 1.0
+        alive: 90
+        refillEvery: "0.7s"
+        refillBatch: 5
         mix: { skirmisher: 5, circler: 5, grunt: 3 }

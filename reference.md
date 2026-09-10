@@ -17,6 +17,8 @@ A key marked **(required)** has no default: leave it out and the file won't load
 | `effect (item hooks)` | `EXPLODE` · `ARC` · `SCRIPT` |
 | `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` |
 | `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` |
+| `type` (spawn `area`) | `ringAroundPlayer` · `fixedPoint` · `rect` · `band` |
+| `kind` (wave `events`) | `pack` · `surge` |
 
 ## combat.yaml
 
@@ -46,6 +48,9 @@ One entry per creep. A **new** id adds a creep; an existing one changes it.
 | `flying` | `true / false` | `false` |
 | `waterSlowFactor` | `number` | `0.5` |
 | `waterSpawnBias` | `number` | `0.0` |
+| `chargeArmor` | `number` | `0.0` |
+| `engageJitter` | `number` | `0.0` |
+| `maxConcurrentCharges` | `whole number` | `0` |
 | `eliteOf` | `text` | `""` |
 | `eliteTier` | `whole number` | `0` |
 | `codex` | `true / false` | `true` |
@@ -68,13 +73,17 @@ Referenced by creeps and bosses. Note `chargeSpeed`: an attack with one **lunges
 | `damageType` | `DamageType` **(required)** | — |
 | `range` | `number` **(required)** | — |
 | `arc` | `number` | — |
-| `cooldown` | `duration, e.g. `"1500ms"` / `"2s"`` **(required)** | — |
-| `windup` | `duration, e.g. `"1500ms"` / `"2s"`` | — |
+| `cooldown` | `duration, e.g. "1500ms" / "2s"` **(required)** | — |
+| `windup` | `duration, e.g. "1500ms" / "2s"` | — |
 | `cooldownGroup` | `text` | — |
 | `gcd` | `true / false` | — |
 | `knockback` | `true / false` | — |
 | `projectile` | `ProjectileSpec` | — |
 | `chargeSpeed` | `number` | — |
+| `chargeRepeats` | `whole number` | — |
+| `engageRange` | `number` | — |
+| `chargeOvershoot` | `number` | — |
+| `chargeTrample` | `true / false` | — |
 | `visual` | `text` | — |
 | `beamWidth` | `number` | — |
 
@@ -84,7 +93,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 
 | key | type | default |
 |---|---|---|
-| `introDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `2s` |
+| `introDuration` | `duration, e.g. "1500ms" / "2s"` | `2s` |
 | `pullRadius` | `number` | `30.0` |
 | `creepPullSpeed` | `number` | `9.0` |
 | `playerPullSpeed` | `number` | `2.2` |
@@ -93,59 +102,59 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `slamDamage` | `whole number` | `100` |
 | `slamEdgeDamage` | `whole number` | `18` |
 | `slamMinDamage` | `whole number` | `8` |
-| `landDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
-| `deathDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.2s` |
+| `landDuration` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
+| `deathDuration` | `duration, e.g. "1500ms" / "2s"` | `1.2s` |
 | `hitboxX` | `number` | `0.0` |
 | `hitboxY` | `number` | `0.0` |
 | `phases` | `list` | `[]` |
-| `phase1Duration` | `duration, e.g. `"1500ms"` / `"2s"`` | `7s` |
-| `phase2Duration` | `duration, e.g. `"1500ms"` / `"2s"`` | `7s` |
+| `phase1Duration` | `duration, e.g. "1500ms" / "2s"` | `7s` |
+| `phase2Duration` | `duration, e.g. "1500ms" / "2s"` | `7s` |
 | `strafeSpeed` | `number` | `4.0` |
-| `strafeRepick` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.8s` |
+| `strafeRepick` | `duration, e.g. "1500ms" / "2s"` | `1.8s` |
 | `strafeRadius` | `number` | `10.0` |
-| `chargeInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `4.5s` |
-| `chargeWindup` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `chargeInterval` | `duration, e.g. "1500ms" / "2s"` | `4.5s` |
+| `chargeWindup` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `chargeSpeed` | `number` | `18.0` |
-| `chargeDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
+| `chargeDuration` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
 | `chargeDamage` | `whole number` | `20` |
-| `ringInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.4s` |
-| `ringThrow` | `duration, e.g. `"1500ms"` / `"2s"`` | `450ms` |
-| `ringWindup` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
+| `ringInterval` | `duration, e.g. "1500ms" / "2s"` | `1.4s` |
+| `ringThrow` | `duration, e.g. "1500ms" / "2s"` | `450ms` |
+| `ringWindup` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
 | `ringStep` | `number` | `3.5` |
 | `ringCount` | `whole number` | `4` |
-| `ringStepInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `280ms` |
+| `ringStepInterval` | `duration, e.g. "1500ms" / "2s"` | `280ms` |
 | `ringBandWidth` | `number` | `1.6` |
 | `ringDamage` | `whole number` | `12` |
 | `ringsPerCycle` | `whole number` | `1` |
 | `playerRingEvery` | `whole number` | `2` |
 | `ringSpawnRadius` | `number` | `12.0` |
-| `addInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `900ms` |
+| `addInterval` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `baseAdds` | `whole number` | `6` |
 | `addsPerCycle` | `whole number` | `3` |
 | `addBatch` | `whole number` | `2` |
 | `addCreep` | `text` | `"swarm"` |
 | `projectileAttack` | `text` | `"boss_bolt"` |
-| `baseFireInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `900ms` |
+| `baseFireInterval` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `fireIntervalGrowth` | `number` | `0.15` |
 | `fanShots` | `whole number` | `2` |
 | `radialEvery` | `whole number` | `4` |
 | `radialShots` | `whole number` | `12` |
-| `gunInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `gunInterval` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `gunSpacing` | `number` | `1.2` |
-| `gammaInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `2.8s` |
-| `gammaWindup` | `duration, e.g. `"1500ms"` / `"2s"`` | `350ms` |
+| `gammaInterval` | `duration, e.g. "1500ms" / "2s"` | `2.8s` |
+| `gammaWindup` | `duration, e.g. "1500ms" / "2s"` | `350ms` |
 | `gammaStart` | `number` | `3.0` |
 | `gammaStep` | `number` | `2.6` |
 | `gammaChainLen` | `number` | `34.0` |
-| `gammaChainDelay` | `duration, e.g. `"1500ms"` / `"2s"`` | `55ms` |
+| `gammaChainDelay` | `duration, e.g. "1500ms" / "2s"` | `55ms` |
 | `gammaLanes` | `whole number` | `2` |
 | `gammaLaneGap` | `number` | `2.2` |
 | `gammaBand` | `number` | `1.9` |
 | `gammaDamage` | `whole number` | `12` |
 | `slashDashes` | `whole number` | `2` |
-| `slashWindup` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
+| `slashWindup` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
 | `slashSpeed` | `number` | `24.0` |
-| `slashStrike` | `duration, e.g. `"1500ms"` / `"2s"`` | `300ms` |
+| `slashStrike` | `duration, e.g. "1500ms" / "2s"` | `300ms` |
 | `slashOvershoot` | `number` | `12.0` |
 | `slashRadius` | `number` | `3.0` |
 | `slashDamage` | `whole number` | `20` |
@@ -155,54 +164,54 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `eliteCount2` | `whole number` | `0` |
 | `addCreep3` | `text` | `""` |
 | `eliteCount3` | `whole number` | `0` |
-| `summonTimeout` | `duration, e.g. `"1500ms"` / `"2s"`` | `20s` |
-| `barrageInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.1s` |
+| `summonTimeout` | `duration, e.g. "1500ms" / "2s"` | `20s` |
+| `barrageInterval` | `duration, e.g. "1500ms" / "2s"` | `1.1s` |
 | `barrageBombs` | `whole number` | `2` |
 | `barrageBombsPerCycle` | `whole number` | `1` |
 | `spiralEvery` | `whole number` | `3` |
-| `slamTelegraph` | `duration, e.g. `"1500ms"` / `"2s"`` | `900ms` |
-| `novaWindup` | `duration, e.g. `"1500ms"` / `"2s"`` | `250ms` |
+| `slamTelegraph` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
+| `novaWindup` | `duration, e.g. "1500ms" / "2s"` | `250ms` |
 | `turretCount` | `whole number` | `2` |
 | `turretCreep` | `text` | `"turret_elite"` |
 | `slamAdds` | `list` | `[]` |
-| `relocateDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `relocateDuration` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `relocateSpeed` | `number` | `22.0` |
-| `flameDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `2.2s` |
+| `flameDuration` | `duration, e.g. "1500ms" / "2s"` | `2.2s` |
 | `flameRange` | `number` | `9.0` |
 | `flameArc` | `number` | `34.0` |
 | `flameTickDamage` | `whole number` | `6` |
-| `flameTickInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `200ms` |
+| `flameTickInterval` | `duration, e.g. "1500ms" / "2s"` | `200ms` |
 | `flameTurnRate` | `number` | `60.0` |
-| `flameDeployDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
-| `flameReturnDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
-| `broodInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.2s` |
+| `flameDeployDuration` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
+| `flameReturnDuration` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
+| `broodInterval` | `duration, e.g. "1500ms" / "2s"` | `1.2s` |
 | `broodAdds` | `list` | `[]` |
 | `broodPerCycle` | `whole number` | `1` |
-| `burrowHide` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `burrowHide` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `burrowBurst` | `whole number` | `6` |
 | `burrowCreep` | `text` | `"swarm"` |
-| `coreNovaInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `4.5s` |
+| `coreNovaInterval` | `duration, e.g. "1500ms" / "2s"` | `4.5s` |
 | `burrowVulnMult` | `number` | `2.0` |
-| `burrowVulnWindow` | `duration, e.g. `"1500ms"` / `"2s"`` | `2.5s` |
+| `burrowVulnWindow` | `duration, e.g. "1500ms" / "2s"` | `2.5s` |
 | `acidHp` | `number` | `0.4` |
-| `acidDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `8s` |
+| `acidDuration` | `duration, e.g. "1500ms" / "2s"` | `8s` |
 | `absorbHeal` | `whole number` | `6` |
-| `acidTick` | `duration, e.g. `"1500ms"` / `"2s"`` | `500ms` |
+| `acidTick` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
 | `acidDamage` | `whole number` | `4` |
-| `fruitInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `2.6s` |
+| `fruitInterval` | `duration, e.g. "1500ms" / "2s"` | `2.6s` |
 | `fruitPerWave` | `whole number` | `2` |
 | `healAmount` | `whole number` | `30` |
-| `boltInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `1.5s` |
+| `boltInterval` | `duration, e.g. "1500ms" / "2s"` | `1.5s` |
 | `boltDamage` | `whole number` | `24` |
 | `boltRadius` | `number` | `2.2` |
-| `boltTelegraph` | `duration, e.g. `"1500ms"` / `"2s"`` | `800ms` |
+| `boltTelegraph` | `duration, e.g. "1500ms" / "2s"` | `800ms` |
 | `boltPerWave` | `whole number` | `1` |
-| `buffTelegraph` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `buffTelegraph` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `buffDamageMult` | `number` | `1.6` |
-| `castDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `3.8s` |
-| `castInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `850ms` |
+| `castDuration` | `duration, e.g. "1500ms" / "2s"` | `3.8s` |
+| `castInterval` | `duration, e.g. "1500ms" / "2s"` | `850ms` |
 | `daggerWaves` | `whole number` | `4` |
-| `daggerInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `700ms` |
+| `daggerInterval` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `daggersPerWave` | `whole number` | `3` |
 | `daggerRingRadius` | `number` | `3.5` |
 | `daggerRingFlatten` | `number` | `0.45` |
@@ -213,15 +222,15 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `daggerSliceDamage` | `whole number` | `10` |
 | `daggerStabDamage` | `whole number` | `14` |
 | `daggerStabRadius` | `number` | `1.9` |
-| `daggerTeleport` | `duration, e.g. `"1500ms"` / `"2s"`` | `4.2s` |
+| `daggerTeleport` | `duration, e.g. "1500ms" / "2s"` | `4.2s` |
 | `swordDamage` | `whole number` | `26` |
 | `swordRadius` | `number` | `2.2` |
-| `swordTelegraph` | `duration, e.g. `"1500ms"` / `"2s"`` | `900ms` |
+| `swordTelegraph` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `swordsPerCast` | `whole number` | `1` |
-| `volleyDuration` | `duration, e.g. `"1500ms"` / `"2s"`` | `2.4s` |
-| `volleyInterval` | `duration, e.g. `"1500ms"` / `"2s"`` | `550ms` |
-| `teleHide` | `duration, e.g. `"1500ms"` / `"2s"`` | `450ms` |
-| `zapTelegraph` | `duration, e.g. `"1500ms"` / `"2s"`` | `800ms` |
+| `volleyDuration` | `duration, e.g. "1500ms" / "2s"` | `2.4s` |
+| `volleyInterval` | `duration, e.g. "1500ms" / "2s"` | `550ms` |
+| `teleHide` | `duration, e.g. "1500ms" / "2s"` | `450ms` |
+| `zapTelegraph` | `duration, e.g. "1500ms" / "2s"` | `800ms` |
 | `zapRadius` | `number` | `5.5` |
 | `zapDamage` | `whole number` | `22` |
 
@@ -230,7 +239,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | key | type | default |
 |---|---|---|
 | `label` | `text` | `""` |
-| `duration` | `duration, e.g. `"1500ms"` / `"2s"`` | `7s` |
+| `duration` | `duration, e.g. "1500ms" / "2s"` | `7s` |
 | `actions` | `list` | `[]` |
 
 ### `bossVariants.<id>.phases[].actions[]`
@@ -238,9 +247,9 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | key | type | default |
 |---|---|---|
 | `action` | `BossAction` **(required)** | — |
-| `every` | `duration, e.g. `"1500ms"` / `"2s"`` | — |
+| `every` | `duration, e.g. "1500ms" / "2s"` | — |
 | `count` | `whole number` | — |
-| `delay` | `duration, e.g. `"1500ms"` / `"2s"`` | — |
+| `delay` | `duration, e.g. "1500ms" / "2s"` | — |
 
 ### `player`
 
@@ -327,6 +336,108 @@ Use `startItems+` (with the `+`) to ADD starting items rather than replace them.
 | `tagWeights` | `map` | `{}` |
 | `deny` | `list` | `[]` |
 | `id` | `text` | `""` |
+
+## biomes.yaml
+
+Which creeps spawn, and in what rhythm, for one biome. Everything you **don't** write carries
+over from the base biome — `phases` and `beats` are lists, so writing either replaces the
+biome's wholesale, while `events` is a map and merges by key (you can add one pack without
+restating the rest).
+
+### `biomes.<id>`
+
+One entry per biome id (`wasteland`, `blood_forest`, `swamp`, `forest`, `overgrown_temple`, `winter`). Endless/freeplay does not read this file.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `area` | `SpawnAreaDef` | `RingAroundPlayer(minRadius=8.0, maxRadius=14.0)` | Where the baseline creep stream puts creeps. An event can override it with its own `area`. |
+| `minDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge ceiling: the soonest the boss can arrive. For this long the gauge can climb no faster than the clock, so no build can rush the phase spine by killing faster. Your first phase's `until` × this is how long the opener lasts. `"0s"` = off. |
+| `maxDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge floor: the latest the boss can arrive. The gauge is dragged up to at least `elapsed / this`, so a run that stalls still resolves in a boss fight. `"0s"` = off (no deadline). |
+| `thresholdScale` | `number` | `1.0` | Multiplies the level's `bossThreshold` for this biome — how much killing the boss fight costs here. |
+| `phases` | `list` | `[]` | The phase spine, in order. Replaces the base biome's wholesale — end it at `until: 1.0`. |
+| `events` | `map` | `{}` | Named packs and surges, referenced by a phase's `events.cycle` and by `beats`. Maps MERGE by key, so adding one event here keeps the biome's others. |
+| `beats` | `list` | `[]` | Guaranteed set pieces on the gauge (the pre-boss surge and friends). Replaces the base list wholesale. |
+
+### `biomes.<id>.phases[]`
+
+The phase spine, in order — the active phase is the first whose `until` the gauge hasn't passed. The last one should be `until: 1.0`. **`mix` here is WEIGHTS**, not counts: `{ a: 3, b: 1 }` means 75% / 25% of whatever the top-up spawns.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `until` | `number` **(required)** | — | Gauge fraction (0..1) this phase runs up to. The last phase should be `1.0`. |
+| `mix` | `map` | — | Creep id → **weight** (not a count): `{ a: 3, b: 1 }` is 75% / 25% of whatever the refill spawns. |
+| `alive` | `whole number` | — | How many of these creeps are alive around you at once — a POPULATION, not a spawn rate. The director tops the field back up to it as you kill. |
+| `refillEvery` | `duration, e.g. "1500ms" / "2s"` | — | How often the top-up happens. |
+| `refillBatch` | `whole number` | — | Most creeps one top-up may add. This over `refillEvery` is the fastest anyone can kill here, so it also sets how quickly the best build can reach the boss. |
+| `events` | `EventSchedule` | — | The pack/surge rhythm for this phase. Leave it out for no scheduled threats. |
+| `label` | `text` | — | Name shown on the HUD timeline when the phase starts. Blank = not shown. |
+
+### `biomes.<id>.phases[].events`
+
+This phase's threat rhythm: the named events fire in order on the phase's own clock, then wrap.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `every` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gap between events. The first one lands this long after the phase starts. |
+| `cycle` | `list` | `[]` | Event names from `events:`, fired in this order, then wrapping round. |
+
+### `biomes.<id>.events.<name>`
+
+A pack (a cluster around one point — a position problem) or a surge (a burst from one direction with a way out — a build problem). **`mix` here is literal COUNTS**, unlike a phase's: `{ boar: 16 }` spawns 16 boars at once. Spawned *above* the phase's `alive` target.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `kind` | `WaveEventKind` | `pack` | `pack` (a cluster around one point) or `surge` (a burst from one direction). |
+| `mix` | `map` | `{}` | Creep id → **how many** spawn at once. A literal count here, unlike a phase's `mix`. |
+| `spread` | `number` | `2.5` | `pack` only: how far (metres) the members scatter from the group's anchor point. |
+| `arcDeg` | `number` | `90.0` | `surge` only: how wide (degrees) the arc it pours in from is. Narrower = more of a single lane. |
+| `holdArc` | `duration, e.g. "1500ms" / "2s"` | `0s` | `surge` only: how long the normal creep stream keeps coming from that same arc afterwards. |
+| `area` | `SpawnAreaDef` | — | Placement just for this event; leave it out to use the biome's `area`. |
+
+### `biomes.<id>.beats[]`
+
+Guaranteed set pieces on the boss gauge — the pre-boss surge and friends. They also show on the HUD timeline.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `atGauge` | `number` **(required)** | — | Gauge fraction (0..1) that fires it. It shows on the HUD timeline here too. |
+| `event` | `text` **(required)** | — | Which `events:` entry to fire. |
+
+Areas — `area:` takes a `type:` plus that type's own keys:
+
+### `area` · `type: ringAroundPlayer`
+
+The default: a ring centred on the player.
+
+| key | type | default |
+|---|---|---|
+| `minRadius` | `number` | `8.0` |
+| `maxRadius` | `number` | `14.0` |
+
+### `area` · `type: fixedPoint`
+
+| key | type | default |
+|---|---|---|
+| `x` | `number` **(required)** | — |
+| `y` | `number` **(required)** | — |
+
+### `area` · `type: rect`
+
+| key | type | default |
+|---|---|---|
+| `x` | `number` **(required)** | — |
+| `y` | `number` **(required)** | — |
+| `width` | `number` **(required)** | — |
+| `height` | `number` **(required)** | — |
+
+### `area` · `type: band`
+
+| key | type | default |
+|---|---|---|
+| `minY` | `number` **(required)** | — |
+| `maxY` | `number` **(required)** | — |
+| `aheadMin` | `number` | — |
+| `aheadMax` | `number` | — |
 
 ## Lua API
 

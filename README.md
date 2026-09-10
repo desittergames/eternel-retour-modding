@@ -1,19 +1,22 @@
+<!--
+  THE PLAYER-FACING MODDING GUIDE. This file IS the README of the public
+  https://github.com/desittergames/eternel-retour-modding repo — CI copies it there verbatim on a v* tag,
+  alongside the generated reference and the examples.
+
+  So: edit it HERE. An edit made in the public repo will be overwritten by the next release. It used to be the
+  other way round (see docs/plan/mods-client-and-shared.md and PR #382), because that repo's README carried the
+  examples index; the index now lives in examples/README.md and generates itself, so there is nothing left
+  there that this file cannot own.
+-->
+
 # Modding L'Éternel Retour: Death Gamble
 
 A mod is a folder. It can add creeps, bosses, items, heroes, sprites, sounds, translations and behaviour —
 without touching the game's files, without compiling anything, and without the game being rebuilt.
 
 **Start here:** copy an example out of [`examples/`](examples), drop it in your `mods/` folder, and turn it on.
-
-| Example | Shows |
-|---|---|
-| [01-hello](examples/01-hello) | the smallest possible mod — two files |
-| [02-new-creep](examples/02-new-creep) | a new creep with its own sprite sheet |
-| [03-behaviour](examples/03-behaviour) | creeps that kite and circle instead of charging |
-| [04-scripted-verb](examples/04-scripted-verb) | an item whose effect is written in Lua, with its own name and FX |
-| [05-boss-fight](examples/05-boss-fight) | a whole boss fight composed in config |
-
-Every example is a working mod. Fork this repo and edit them.
+They are meant to be read in order — each adds one idea to the one before it, and the list of what each shows
+is in [`examples/`](examples) itself. Fork the repo and edit them.
 
 > **Scope of this page.** This is the guide: layout, rules, worked examples, and the mistakes that cost real
 > time. The exhaustive *key → type → default* tables are **generated from the game's own config classes** and
@@ -207,9 +210,50 @@ biomes:
     phases:
       - until: 0.5
         label: "Slime Tide"
-        intensity: 0.6
+        alive: 30           # how many are around you at once — a POPULATION, not a spawn rate
+        refillEvery: "1s"   # how often the game tops that back up…
+        refillBatch: 3      # …and how many it may add each time
         mix: { my_slime: 6, grunt: 2 }
 ```
+
+> **`alive` is the dial you actually want.** It is a *target concurrent count*: the game keeps topping the field
+> back up toward it as the player kills, so a strong build gets faster turnover rather than an empty screen, and
+> a weak one can't be buried under an ever-growing flood. `refillBatch / refillEvery` is how fast the top-up can
+> happen — which also makes it the **fastest anyone can kill in this phase**, and therefore how quickly the best
+> build can push the boss gauge along.
+
+Packs and surges — the scheduled threats — are a separate stream, defined once in `events:` and referenced by
+name from a phase's `events.cycle` (fired in order, on the phase's own clock) or from `beats` (fired once,
+guaranteed, at a point on the boss gauge):
+
+```yaml
+biomes:
+  wasteland:
+    events:
+      slime_knot:  { kind: pack,  mix: { my_slime: 4 }, spread: 2.5 }
+      slime_tide:  { kind: surge, mix: { my_slime: 12 }, arcDeg: 90, holdArc: "8s" }
+    phases:
+      - until: 1.0
+        alive: 60
+        refillEvery: "0.8s"
+        refillBatch: 4
+        mix: { my_slime: 6, grunt: 2 }
+        events: { every: "15s", cycle: [slime_knot, slime_tide] }
+```
+
+A `pack` lands as one cluster around a single point, `spread` metres wide — a position problem. A `surge` pours
+in from **one direction** (an arc `arcDeg` wide, behind the player), and for `holdArc` afterwards the normal
+creep stream keeps coming from that same side — a build problem with a guaranteed way to run.
+
+> **Everything you didn't write carries over.** `phases` and `beats` are lists, so writing either replaces the
+> biome's wholesale; `events` is a **map**, so your entries merge in beside the biome's own and you can add one
+> pack without restating the rest.
+>
+> Two keys are worth knowing about even if you never write them: `minDuration` is the soonest the boss can
+> arrive (a *ceiling* on the gauge — the player can't rush the phase spine by killing faster), and `maxDuration`
+> is the latest (a *floor* — a run that stalls still ends in a boss fight). The opener falls out of the first:
+> `phases[0].until × minDuration` is how long your first phase lasts, so `until: 0.5` above puts the player in
+> the slime tide for half of the biome's `minDuration`. `"0s"` switches either wall off.
 
 ### How creeps move
 
@@ -379,9 +423,11 @@ evidence that survives — put one in early.
 
 ## Reference
 
-Exhaustive key/type/default tables for every config file, and the full Lua API, are **generated from the game's
-own source** each release, so they can't drift from what the game actually accepts. `reference.md` lands here
-alongside this guide.
+**[reference.md](reference.md)** — every key the game accepts, its type, and its default, plus the full Lua API
+and the accepted values for every setting that takes a fixed set (`behavior`, boss `action`, hook `trigger`…).
+
+It is **generated from the game's own config classes**, and a test fails the build if the committed copy drifts
+from them — so it describes what the game actually accepts, not what someone remembered to write down.
 
 ## A note on assets
 
@@ -389,15 +435,15 @@ alongside this guide.
 assets — they're licensed to the game, not to mods built on it. Your mod's own files, or assets you're licensed
 for, only.
 
-Every image in this repository is generated by [`tools/make_placeholder_sprites.py`](tools/make_placeholder_sprites.py),
-which is why the examples look like coloured blobs: they exist to prove the pipeline, not to look good. Replace
-them with real art in your own mod.
+The examples look like coloured blobs for the same reason: their art is generated rather than borrowed. See
+[`examples/`](examples) for how, and replace it with real art in your own mod.
 
 ## Contributing
 
 Corrections and better examples are welcome — open an issue or a PR. Note that the **reference is generated**,
-so fixes to it belong in the game's source rather than here; the guide and the examples are hand-written and
-directly editable.
+so fixes to it belong in the game's source rather than here. The guide is generated-adjacent: it is published
+from the game repository, so a PR against it here will be overwritten — raise an issue instead and it will be
+fixed at the source.
 
 ## Licence
 
