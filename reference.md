@@ -156,6 +156,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `slashSpeed` | `number` | `24.0` |
 | `slashStrike` | `duration, e.g. "1500ms" / "2s"` | `300ms` |
 | `slashOvershoot` | `number` | `12.0` |
+| `slashMaxRange` | `number` | `13.0` |
 | `slashRadius` | `number` | `3.0` |
 | `slashDamage` | `whole number` | `20` |
 | `summonHp` | `list` | `[0.7, 0.35]` |
