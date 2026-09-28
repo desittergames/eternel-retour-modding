@@ -79,6 +79,7 @@ Referenced by creeps and bosses. Note `chargeSpeed`: an attack with one **lunges
 | `gcd` | `true / false` | — |
 | `knockback` | `true / false` | — |
 | `projectile` | `ProjectileSpec` | — |
+| `muzzle` | `number` | — |
 | `chargeSpeed` | `number` | — |
 | `chargeRepeats` | `whole number` | — |
 | `engageRange` | `number` | — |
