@@ -142,6 +142,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `radialShots` | `whole number` | `12` |
 | `gunInterval` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `gunSpacing` | `number` | `1.2` |
+| `gunMaxOffAimDeg` | `number` | `0.0` |
 | `gammaInterval` | `duration, e.g. "1500ms" / "2s"` | `2.8s` |
 | `gammaWindup` | `duration, e.g. "1500ms" / "2s"` | `350ms` |
 | `gammaStart` | `number` | `3.0` |
@@ -158,6 +159,8 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `slashStrike` | `duration, e.g. "1500ms" / "2s"` | `300ms` |
 | `slashOvershoot` | `number` | `12.0` |
 | `slashMaxRange` | `number` | `13.0` |
+| `aimLead` | `number` | `0.0` |
+| `aimLeadMax` | `number` | `6.0` |
 | `slashRadius` | `number` | `3.0` |
 | `slashDamage` | `whole number` | `20` |
 | `summonHp` | `list` | `[0.7, 0.35]` |
@@ -171,6 +174,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `barrageBombs` | `whole number` | `2` |
 | `barrageBombsPerCycle` | `whole number` | `1` |
 | `spiralEvery` | `whole number` | `3` |
+| `barrageLeadShare` | `number` | `0.0` |
 | `slamTelegraph` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `novaWindup` | `duration, e.g. "1500ms" / "2s"` | `250ms` |
 | `turretCount` | `whole number` | `2` |
@@ -263,10 +267,13 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `hitboxX` | `number` | `-0.5` |
 | `hitboxY` | `number` | `0.0` |
 | `magnetRadius` | `number` | `3.0` |
-| `regenPerSec` | `number` | `0.0` |
+| `regenPctPerSec` | `number` | `0.0` |
+| `leechCapPerMaxHp` | `number` | `0.0` |
 | `baseCritChance` | `number` | `0.0` |
 | `baseCritMultiplier` | `number` | `1.5` |
 | `armorCap` | `number` | `0.8` |
+| `armorK` | `number` | `0.0` |
+| `armorKPerCreepLevel` | `number` | `0.0` |
 | `dash` | `DashDef` | `DashDef(duration=300ms, speedMultiplier=2.0, iframe=200ms, cooldown=1.2s, pierceRadius=1.5, pierceDamage=8, refundPerEnemy=150ms, refundMaxPerDash=900ms, skillRefundPerEnemy=80ms, skillRefundMaxPerDash=600ms, comboWindow=2.5s, comboMax=5, comboDamageBonus=0.5, endNovaRadius=0.0, endNovaKnockback=0.5)` |
 | `orb` | `OrbDef` | `OrbDef(orbitRadius=1.6, spin=6.0, damage=4, hitRadius=0.6, hitCadence=250ms)` |
 | `xp` | `XpDef` | `XpDef(baseXp=5, perLevel=4)` |
@@ -359,6 +366,8 @@ One entry per biome id (`wasteland`, `blood_forest`, `swamp`, `forest`, `overgro
 | `phases` | `list` | `[]` | The phase spine, in order. Replaces the base biome's wholesale — end it at `until: 1.0`. |
 | `events` | `map` | `{}` | Named packs and surges, referenced by a phase's `events.cycle` and by `beats`. Maps MERGE by key, so adding one event here keeps the biome's others. |
 | `beats` | `list` | `[]` | Guaranteed set pieces on the gauge (the pre-boss surge and friends). Replaces the base list wholesale. |
+| `bossHp` | `number` | `1.0` | Multiplies this biome's boss HP (on top of the usual depth scaling). 1 = as-is. |
+| `bossDamage` | `number` | `1.0` | Multiplies this biome's boss outgoing damage. 1 = as-is. |
 
 ### `biomes.<id>.phases[]`
 
@@ -373,6 +382,8 @@ The phase spine, in order — the active phase is the first whose `until` the ga
 | `refillBatch` | `whole number` | — | Most creeps one top-up may add. This over `refillEvery` is the fastest anyone can kill here, so it also sets how quickly the best build can reach the boss. |
 | `events` | `EventSchedule` | — | The pack/surge rhythm for this phase. Leave it out for no scheduled threats. |
 | `label` | `text` | — | Name shown on the HUD timeline when the phase starts. Blank = not shown. |
+| `creepHp` | `number` | — | Multiplies the HP of creeps spawned during this phase (on top of the creep level). 1 = as-is. |
+| `creepDamage` | `number` | — | Multiplies the outgoing damage of creeps spawned during this phase. 1 = as-is. |
 
 ### `biomes.<id>.phases[].events`
 
