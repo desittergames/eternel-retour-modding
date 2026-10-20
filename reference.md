@@ -16,7 +16,7 @@ A key marked **(required)** has no default: leave it out and the file won't load
 | `trigger (item hooks)` | `KILL` · `HIT` · `CRIT` |
 | `effect (item hooks)` | `EXPLODE` · `ARC` · `SCRIPT` |
 | `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` |
-| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` |
+| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` |
 | `type` (spawn `area`) | `ringAroundPlayer` · `fixedPoint` · `rect` · `band` |
 | `kind` (wave `events`) | `pack` · `surge` |
 
@@ -163,6 +163,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `aimLeadMax` | `number` | `6.0` |
 | `slashRadius` | `number` | `3.0` |
 | `slashDamage` | `whole number` | `20` |
+| `dotImmune` | `list` | `[]` |
 | `summonHp` | `list` | `[0.7, 0.35]` |
 | `eliteCount` | `whole number` | `4` |
 | `addCreep2` | `text` | `""` |
