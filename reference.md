@@ -16,7 +16,7 @@ A key marked **(required)** has no default: leave it out and the file won't load
 | `trigger (item hooks)` | `KILL` · `HIT` · `CRIT` |
 | `effect (item hooks)` | `EXPLODE` · `ARC` · `SCRIPT` |
 | `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` |
-| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` |
+| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` · `DASH_CHARGES` |
 | `type` (spawn `area`) | `ringAroundPlayer` · `fixedPoint` · `rect` · `band` |
 | `kind` (wave `events`) | `pack` · `surge` |
 
@@ -275,7 +275,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `armorCap` | `number` | `0.8` |
 | `armorK` | `number` | `0.0` |
 | `armorKPerCreepLevel` | `number` | `0.0` |
-| `dash` | `DashDef` | `DashDef(duration=300ms, speedMultiplier=2.0, iframe=200ms, cooldown=1.2s, pierceRadius=1.5, pierceDamage=8, refundPerEnemy=150ms, refundMaxPerDash=900ms, skillRefundPerEnemy=80ms, skillRefundMaxPerDash=600ms, comboWindow=2.5s, comboMax=5, comboDamageBonus=0.5, endNovaRadius=0.0, endNovaKnockback=0.5)` |
+| `dash` | `DashDef` | `DashDef(duration=300ms, speedMultiplier=2.0, iframe=200ms, cooldown=1.2s, chargeGap=400ms, pierceRadius=1.5, pierceDamage=8, refundPerEnemy=150ms, refundMaxPerDash=900ms, skillRefundPerEnemy=80ms, skillRefundMaxPerDash=600ms, comboWindow=2.5s, comboMax=5, comboDamageBonus=0.5, endNovaRadius=0.0, endNovaKnockback=0.5)` |
 | `orb` | `OrbDef` | `OrbDef(orbitRadius=1.6, spin=6.0, damage=4, hitRadius=0.6, hitCadence=250ms)` |
 | `xp` | `XpDef` | `XpDef(baseXp=5, perLevel=4)` |
 | `skillShop` | `SkillShopDef` | `SkillShopDef(levels=[5, 12], repeatFrom=20, repeatEvery=10)` |
