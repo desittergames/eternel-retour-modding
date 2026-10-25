@@ -54,6 +54,7 @@ One entry per creep. A **new** id adds a creep; an existing one changes it.
 | `eliteOf` | `text` | `""` |
 | `eliteTier` | `whole number` | `0` |
 | `codex` | `true / false` | `true` |
+| `codexStep` | `whole number` | `0` |
 
 ### `creeps.<id>.attacks[]`
 
