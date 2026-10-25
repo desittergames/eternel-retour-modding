@@ -275,7 +275,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `armorCap` | `number` | `0.8` |
 | `armorK` | `number` | `0.0` |
 | `armorKPerCreepLevel` | `number` | `0.0` |
-| `dash` | `DashDef` | `DashDef(duration=300ms, speedMultiplier=2.0, iframe=200ms, cooldown=1.2s, chargeGap=400ms, pierceRadius=1.5, pierceDamage=8, refundPerEnemy=150ms, refundMaxPerDash=900ms, skillRefundPerEnemy=80ms, skillRefundMaxPerDash=600ms, comboWindow=2.5s, comboMax=5, comboDamageBonus=0.5, endNovaRadius=0.0, endNovaKnockback=0.5)` |
+| `dash` | `DashDef` | `DashDef(duration=300ms, speedMultiplier=2.0, iframe=200ms, cooldown=1.2s, chargeGap=200ms, pierceRadius=1.5, pierceDamage=8, refundPerEnemy=150ms, refundMaxPerDash=900ms, skillRefundPerEnemy=80ms, skillRefundMaxPerDash=600ms, comboWindow=2.5s, comboMax=5, comboDamageBonus=0.5, endNovaRadius=0.0, endNovaKnockback=0.5)` |
 | `gunMuzzleSide` | `number` | `0.65` |
 | `gunMuzzleForward` | `number` | `0.34` |
 | `orb` | `OrbDef` | `OrbDef(orbitRadius=1.6, spin=6.0, damage=4, hitRadius=0.6, hitCadence=250ms)` |
