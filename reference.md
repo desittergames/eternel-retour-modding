@@ -30,7 +30,7 @@ One entry per creep. A **new** id adds a creep; an existing one changes it.
 |---|---|---|
 | `attacks` | `list` | `[]` |
 | `maxHealth` | `whole number` | `12` |
-| `aggroRadius` | `number` | `6.0` |
+| `aggroRadius` | `number` | `15.0` |
 | `wanderRadius` | `number` | `2.5` |
 | `wanderSpeed` | `number` | `1.2` |
 | `chaseSpeed` | `number` | `3.0` |
@@ -50,6 +50,7 @@ One entry per creep. A **new** id adds a creep; an existing one changes it.
 | `waterSpawnBias` | `number` | `0.0` |
 | `chargeArmor` | `number` | `0.0` |
 | `engageJitter` | `number` | `0.0` |
+| `pokeChance` | `number` | `0.0` |
 | `maxConcurrentCharges` | `whole number` | `0` |
 | `eliteOf` | `text` | `""` |
 | `eliteTier` | `whole number` | `0` |
@@ -346,6 +347,8 @@ Use `startItems+` (with the `+`) to ADD starting items rather than replace them.
 | `growth` | `GrowthDef` | `GrowthDef(maxHealth=0.0, regen=0.0, armor=0.0, damage=0.0, attackSpeed=0.0, area=0.0, crit=0.0, moveSpeed=0.0, magnet=0.0, skillDamage=0.0, skillSize=0.0, skillHaste=0.0, skillDuration=0.0)` |
 | `passiveLimit` | `whole number` | `3` |
 | `turretMultishotFraction` | `number` | `0.33333334` |
+| `multishotBoltValue` | `number` | `0.35` |
+| `turretMultishotBoltValue` | `number` | `0.35` |
 | `tagWeights` | `map` | `{}` |
 | `deny` | `list` | `[]` |
 | `id` | `text` | `""` |
