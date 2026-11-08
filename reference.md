@@ -274,6 +274,11 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `leechCapPerMaxHp` | `number` | `0.0` |
 | `baseCritChance` | `number` | `0.0` |
 | `baseCritMultiplier` | `number` | `1.5` |
+| `critK` | `number` | `0.0` |
+| `critKPerLevelGap` | `number` | `0.0` |
+| `critCap` | `number` | `1.0` |
+| `critBossMinLevelGap` | `number` | `0.0` |
+| `damageVariance` | `number` | `0.0` |
 | `armorCap` | `number` | `0.8` |
 | `armorK` | `number` | `0.0` |
 | `armorKPerCreepLevel` | `number` | `0.0` |
