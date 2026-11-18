@@ -15,7 +15,7 @@ A key marked **(required)** has no default: leave it out and the file won't load
 | `action (boss phases)` | `RING` · `RING_AT_PLAYER` · `FAN` · `RADIAL` · `TWIN_GUNS` · `ADDS` |
 | `trigger (item hooks)` | `KILL` · `HIT` · `CRIT` |
 | `effect (item hooks)` | `EXPLODE` · `ARC` · `SCRIPT` |
-| `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` |
+| `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` · `GROUND` |
 | `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` · `DASH_CHARGES` |
 | `type` (spawn `area`) | `ringAroundPlayer` · `fixedPoint` · `rect` · `band` |
 | `kind` (wave `events`) | `pack` · `surge` |
@@ -49,6 +49,8 @@ One entry per creep. A **new** id adds a creep; an existing one changes it.
 | `waterSlowFactor` | `number` | `0.5` |
 | `waterSpawnBias` | `number` | `0.0` |
 | `chargeArmor` | `number` | `0.0` |
+| `hatch` | `HatchDef` | — |
+| `anchored` | `true / false` | `false` |
 | `engageJitter` | `number` | `0.0` |
 | `pokeChance` | `number` | `0.0` |
 | `maxConcurrentCharges` | `whole number` | `0` |
@@ -82,6 +84,7 @@ Referenced by creeps and bosses. Note `chargeSpeed`: an attack with one **lunges
 | `knockback` | `true / false` | — |
 | `projectile` | `ProjectileSpec` | — |
 | `muzzle` | `number` | — |
+| `fan` | `whole number` | — |
 | `chargeSpeed` | `number` | — |
 | `chargeRepeats` | `whole number` | — |
 | `engageRange` | `number` | — |
@@ -89,6 +92,16 @@ Referenced by creeps and bosses. Note `chargeSpeed`: an attack with one **lunges
 | `chargeTrample` | `true / false` | — |
 | `visual` | `text` | — |
 | `beamWidth` | `number` | — |
+| `ground` | `GroundSpec` | — |
+
+### `attacks.<id>.ground`
+
+`delivery: GROUND` only: the strike marks the target's spot on the release, then hits everyone within `radius` of it after `delay`. Its art is `fx_<visual>` (clips `fall`, `sit`, `burst`).
+
+| key | type | default |
+|---|---|---|
+| `delay` | `duration, e.g. "1500ms" / "2s"` | `750ms` |
+| `radius` | `number` | `1.0` |
 
 ### `bossVariants.<id>`
 
@@ -131,6 +144,30 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `ringsPerCycle` | `whole number` | `1` |
 | `playerRingEvery` | `whole number` | `2` |
 | `ringSpawnRadius` | `number` | `12.0` |
+| `rockInterval` | `duration, e.g. "1500ms" / "2s"` | `1.2s` |
+| `rocksPerVolley` | `whole number` | `3` |
+| `rockTelegraph` | `duration, e.g. "1500ms" / "2s"` | `1s` |
+| `rockRadius` | `number` | `1.5` |
+| `rockDamage` | `whole number` | `22` |
+| `rockPlayerEvery` | `whole number` | `2` |
+| `rockLead` | `number` | `0.0` |
+| `rockFire` | `duration, e.g. "1500ms" / "2s"` | `0s` |
+| `rockRadialEvery` | `whole number` | `0` |
+| `rockDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` |
+| `boulderChance` | `number` | `0.2` |
+| `boulderSize` | `number` | `1.6` |
+| `boulderLife` | `duration, e.g. "1500ms" / "2s"` | `14s` |
+| `boulderMax` | `whole number` | `3` |
+| `collapseAt` | `list` | `[]` |
+| `collapseStep` | `number` | `5.0` |
+| `collapseEvery` | `duration, e.g. "1500ms" / "2s"` | `0s` |
+| `collapseLastAfter` | `duration, e.g. "1500ms" / "2s"` | `0s` |
+| `collapseLastSpeed` | `number` | `0.8` |
+| `collapseRocks` | `whole number` | `8` |
+| `collapseHoles` | `whole number` | `2` |
+| `holeBlocks` | `whole number` | `2` |
+| `holeTelegraph` | `duration, e.g. "1500ms" / "2s"` | `2.5s` |
+| `holeFallPct` | `number` | `0.15` |
 | `addInterval` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `baseAdds` | `whole number` | `6` |
 | `addsPerCycle` | `whole number` | `3` |
@@ -203,18 +240,22 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `burrowVulnMult` | `number` | `2.0` |
 | `burrowVulnWindow` | `duration, e.g. "1500ms" / "2s"` | `2.5s` |
 | `acidHp` | `number` | `0.4` |
+| `acidHp2` | `number` | `0.0` |
 | `acidDuration` | `duration, e.g. "1500ms" / "2s"` | `8s` |
 | `absorbHeal` | `whole number` | `6` |
 | `acidTick` | `duration, e.g. "1500ms" / "2s"` | `500ms` |
 | `acidDamage` | `whole number` | `4` |
-| `fruitInterval` | `duration, e.g. "1500ms" / "2s"` | `2.6s` |
-| `fruitPerWave` | `whole number` | `2` |
-| `healAmount` | `whole number` | `30` |
 | `boltInterval` | `duration, e.g. "1500ms" / "2s"` | `1.5s` |
 | `boltDamage` | `whole number` | `24` |
 | `boltRadius` | `number` | `2.2` |
 | `boltTelegraph` | `duration, e.g. "1500ms" / "2s"` | `800ms` |
 | `boltPerWave` | `whole number` | `1` |
+| `stormCageInterval` | `duration, e.g. "1500ms" / "2s"` | `1.5s` |
+| `stormCageBolts` | `whole number` | `6` |
+| `stormCageRadius` | `number` | `6.5` |
+| `stormSweepStep` | `duration, e.g. "1500ms" / "2s"` | `350ms` |
+| `stormSweepAdvance` | `number` | `4.2` |
+| `stormSweepWave` | `number` | `0.0` |
 | `buffTelegraph` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `buffDamageMult` | `number` | `1.6` |
 | `castDuration` | `duration, e.g. "1500ms" / "2s"` | `3.8s` |
@@ -242,6 +283,8 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `zapTelegraph` | `duration, e.g. "1500ms" / "2s"` | `800ms` |
 | `zapRadius` | `number` | `5.5` |
 | `zapDamage` | `whole number` | `22` |
+| `electro` | `ElectroDef` | `ElectroDef(phaseAt=[], phaseEvery=0s, blinkChain=[1], echoDelay=900ms, echoRadius=3.0, echoDamage=0, pylonCreep=, pylonCounts=[], pylonRadius=8.0, pylonShield=0.3, pylonTimeout=30s, arcCharge=700ms, arcOn=3s, arcOff=1.5s, arcTick=250ms, arcWidth=0.6, arcDamage=0, stunDuration=4s, stunVulnMult=2.0, gridCell=3.2, gridExtent=12.0, gridFlips=4, gridFlipEvery=1.1s, gridTelegraph=900ms, gridDamage=0, gridAimed=[1], overloadFrom=2147483647)` |
+| `warden` | `WardenDef` | `WardenDef(scaleByPhase=[1.0], swordsByPhase=[], bearerCreep=, bearerCounts=[], bearerRadius=10.0, bearerMarkY=2.4, herdTimeout=35s, herdHeal=0.05, floatRadius=5.0, floatSpeed=1.6, floodIn=2.5s, tideLevel=[0.5], tideEdge=19.0, floodTick=400ms, floodDamage=0, herdCreeps=[], herdEvery=1.5s, herdBatch=[3], herdRadius=13.0, herdMax=40, riftCount=3, riftSpread=3.0, riftRadius=1.6, riftTelegraph=900ms, riftOpen=3s, riftPull=1.5, riftDamage=0, riftTick=400ms, riftVolleys=2, riftInterval=1.1s, orbCount=6, orbRing=2.5, orbGather=1.6s, orbLife=5s, orbFuse=400ms, orbSpeed=3.0, orbHp=30, orbBlast=1.8, orbDamage=0, beamAim=900ms, beamStart=3.4, beamSweep=2.5s, beamArc=200.0, beamLength=16.0, beamWidth=0.7, beamDamage=0, beamTick=250ms, stepTrack=1s, stepLock=500ms, stepRadius=3.0, stepDamage=0, stepPuddle=1.2, singOffset=8.0, singDuration=5s, singReach=14.0, singPull=4.5, singCore=2.1, singWaves=3, singWaveEvery=1.3s, singWaveCharge=600ms, singWaveSpeed=9.0, singWaveDamage=0, singNovaRadius=5.0, singNovaDamage=0, feetY=0.69, rebirthAt=0.02, rebirthHush=600ms, rebirthFill=2s, rebirthPool=6.2, poolAt=0.5, voidAt=0.25, voidStart=16.0, voidMin=6.0, voidCloseIn=10s, voidDriftX=7.0, voidDriftY=4.0, voidDriftPeriod=24s, voidTick=500ms, voidDamage=0, lastStandHaste=0.77)` |
 
 ### `bossVariants.<id>.phases[]`
 
@@ -267,6 +310,8 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `moveSpeed` | `number` | `12.0` |
 | `waterSlowFactor` | `number` | `0.5` |
 | `radius` | `number` | `0.5` |
+| `shoveSpeed` | `number` | `16.0` |
+| `shoveDuration` | `duration, e.g. "1500ms" / "2s"` | `350ms` |
 | `hitboxX` | `number` | `-0.5` |
 | `hitboxY` | `number` | `0.0` |
 | `magnetRadius` | `number` | `3.0` |
@@ -304,6 +349,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `hooks` | `list` | `[]` |
 | `payloads` | `list` | `[]` |
 | `artefact` | `true / false` | `false` |
+| `tokenCost` | `whole number` | `0` |
 | `prereqs` | `list` | `[]` |
 | `prereqMode` | `PrereqMode` | `ALL` |
 | `excludes` | `list` | `[]` |
@@ -350,7 +396,7 @@ Use `startItems+` (with the `+`) to ADD starting items rather than replace them.
 | `startItems` | `list` | `[]` |
 | `maxHealth` | `whole number` | — |
 | `growth` | `GrowthDef` | `GrowthDef(maxHealth=0.0, regen=0.0, armor=0.0, damage=0.0, attackSpeed=0.0, area=0.0, crit=0.0, moveSpeed=0.0, magnet=0.0, skillDamage=0.0, skillSize=0.0, skillHaste=0.0, skillDuration=0.0)` |
-| `passiveLimit` | `whole number` | `3` |
+| `passiveLimit` | `whole number` | `4` |
 | `turretMultishotFraction` | `number` | `0.33333334` |
 | `multishotBoltValue` | `number` | `0.35` |
 | `turretMultishotBoltValue` | `number` | `0.35` |
@@ -375,11 +421,18 @@ One entry per biome id (`wasteland`, `blood_forest`, `swamp`, `forest`, `overgro
 | `minDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge ceiling: the soonest the boss can arrive. For this long the gauge can climb no faster than the clock, so no build can rush the phase spine by killing faster. Your first phase's `until` × this is how long the opener lasts. `"0s"` = off. |
 | `maxDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge floor: the latest the boss can arrive. The gauge is dragged up to at least `elapsed / this`, so a run that stalls still resolves in a boss fight. `"0s"` = off (no deadline). |
 | `thresholdScale` | `number` | `1.0` | Multiplies the level's `bossThreshold` for this biome — how much killing the boss fight costs here. |
+| `xpScale` | `number` | `1.0` | Multiplies all creep XP on this biome's levels — the knob for how fast the hero levels here. 1 = unchanged. |
+| `waterBlocks` | `true / false` | `false` | Water blocks the player and ground creeps (flyers cross it); the plank bridges are the only way over. false = water only slows. |
+| `dashCrossesGaps` | `true / false` | `false` | With waterBlocks: a dash that would land on ground crosses a water gap. false = water stops dashes too. |
+| `scroll` | `ScrollDef` | — | Makes the corridor scroll on its own (an autoscroller): the shared window, its speed, and what its back edge does. Omit = no scrolling. |
+| `chasmDensity` | `number` | — | Share of the corridor's 16-unit cells that hold a water chasm (0 to 1). Omit = the default, 0.66. |
 | `phases` | `list` | `[]` | The phase spine, in order. Replaces the base biome's wholesale — end it at `until: 1.0`. |
 | `events` | `map` | `{}` | Named packs and surges, referenced by a phase's `events.cycle` and by `beats`. Maps MERGE by key, so adding one event here keeps the biome's others. |
 | `beats` | `list` | `[]` | Guaranteed set pieces on the gauge (the pre-boss surge and friends). Replaces the base list wholesale. |
+| `placements` | `list` | `[]` | Set pieces on a scrolling level: an `events:` entry standing at a fixed place in the corridor. Ignored without `scroll:`. |
 | `bossHp` | `number` | `1.0` | Multiplies this biome's boss HP (on top of the usual depth scaling). 1 = as-is. |
 | `bossDamage` | `number` | `1.0` | Multiplies this biome's boss outgoing damage. 1 = as-is. |
+| `bossBleedCap` | `number` | `0.0` | Caps the total bleed on this biome's boss at this share of its max HP per second, instead of the game-wide `effects.bossBleedCap`. 0 = the game-wide cap. |
 
 ### `biomes.<id>.phases[]`
 
@@ -412,9 +465,9 @@ A pack (a cluster around one point — a position problem) or a surge (a burst f
 
 | key | type | default | what it does |
 |---|---|---|---|
-| `kind` | `WaveEventKind` | `pack` | `pack` (a cluster around one point) or `surge` (a burst from one direction). |
+| `kind` | `WaveEventKind` | `pack` | `pack` (a cluster around one point), `surge` (a burst from one direction) or `front` (a line across the whole corridor, ahead of a scrolling window). |
 | `mix` | `map` | `{}` | Creep id → **how many** spawn at once. A literal count here, unlike a phase's `mix`. |
-| `spread` | `number` | `2.5` | `pack` only: how far (metres) the members scatter from the group's anchor point. |
+| `spread` | `number` | `2.5` | `pack`: how far (metres) the members scatter from the group's anchor point. `front`: how deep (metres) the line is. |
 | `arcDeg` | `number` | `90.0` | `surge` only: how wide (degrees) the arc it pours in from is. Narrower = more of a single lane. |
 | `holdArc` | `duration, e.g. "1500ms" / "2s"` | `0s` | `surge` only: how long the normal creep stream keeps coming from that same arc afterwards. |
 | `area` | `SpawnAreaDef` | — | Placement just for this event; leave it out to use the biome's `area`. |
@@ -427,6 +480,16 @@ Guaranteed set pieces on the boss gauge — the pre-boss surge and friends. They
 |---|---|---|---|
 | `atGauge` | `number` **(required)** | — | Gauge fraction (0..1) that fires it. It shows on the HUD timeline here too. |
 | `event` | `text` **(required)** | — | Which `events:` entry to fire. |
+
+### `biomes.<id>.placements[]`
+
+Set pieces on a scrolling level: an event's group standing at a fixed place in the corridor, there when the screen arrives. A beat is a *when*; a placement is a *where*. Ignored on a biome without `scroll:`.
+
+| key | type | default | what it does |
+|---|---|---|---|
+| `at` | `number` **(required)** | — | How far along the corridor it stands (0..1). The screen's front edge reaches it when the bar reads this. |
+| `event` | `text` **(required)** | — | Which `events:` entry stands there. |
+| `anchor` | `SetPieceAnchor` | — | Where exactly: `route` (on the path), `bridge` (the far end of the next bridge) or `bank` (across the next chasm, off the path). |
 
 Areas — `area:` takes a `type:` plus that type's own keys:
 
