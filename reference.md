@@ -222,6 +222,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `slamAdds` | `list` | `[]` |
 | `relocateDuration` | `duration, e.g. "1500ms" / "2s"` | `700ms` |
 | `relocateSpeed` | `number` | `22.0` |
+| `relocateStandOff` | `number` | `5.0` |
 | `flameDuration` | `duration, e.g. "1500ms" / "2s"` | `2.2s` |
 | `flameRange` | `number` | `9.0` |
 | `flameArc` | `number` | `34.0` |
