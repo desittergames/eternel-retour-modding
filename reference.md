@@ -16,7 +16,7 @@ A key marked **(required)** has no default: leave it out and the file won't load
 | `trigger (item hooks)` | `KILL` · `HIT` · `CRIT` |
 | `effect (item hooks)` | `EXPLODE` · `ARC` · `SCRIPT` |
 | `delivery (attacks)` | `MELEE` · `HITSCAN` · `PROJECTILE` · `GROUND` |
-| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` · `DASH_CHARGES` |
+| `stat (item effects)` | `MOVE_SPEED` · `MAX_HEALTH` · `MAGNET` · `XP_GAIN` · `DAMAGE` · `ATTACK_SPEED` · `CRIT_CHANCE` · `CRIT_DAMAGE` · `REGEN` · `AREA` · `ARMOR` · `PIERCE` · `MULTISHOT` · `OMNIVAMP` · `BURN` · `BLEED` · `ORBITER` · `TURRETS` · `WELL_DAMAGE` · `SKILL_POWER` · `SKILL_SIZE` · `SKILL_HASTE` · `SKILL_DURATION` · `KNOCKBACK` · `BURN_POWER` · `DASH_CHARGES` · `LUCK` |
 | `type` (spawn `area`) | `ringAroundPlayer` · `fixedPoint` · `rect` · `band` |
 | `kind` (wave `events`) | `pack` · `surge` |
 
@@ -173,6 +173,7 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `addsPerCycle` | `whole number` | `3` |
 | `addBatch` | `whole number` | `2` |
 | `addCreep` | `text` | `"swarm"` |
+| `addXp` | `true / false` | `false` |
 | `projectileAttack` | `text` | `"boss_bolt"` |
 | `baseFireInterval` | `duration, e.g. "1500ms" / "2s"` | `900ms` |
 | `fireIntervalGrowth` | `number` | `0.15` |
@@ -320,10 +321,21 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `leechCapPerMaxHp` | `number` | `0.0` |
 | `baseCritChance` | `number` | `0.0` |
 | `baseCritMultiplier` | `number` | `1.5` |
+| `critDamageSoftness` | `number` | `0.0` |
 | `critK` | `number` | `0.0` |
 | `critKPerLevelGap` | `number` | `0.0` |
 | `critCap` | `number` | `1.0` |
 | `critBossMinLevelGap` | `number` | `0.0` |
+| `luckCap` | `number` | `50.0` |
+| `gunKnockbackHalfDistance` | `number` | `0.0` |
+| `luckRarity` | `map` | `{}` |
+| `luckEntry` | `map` | `{}` |
+| `beltSlots` | `whole number` | `3` |
+| `beltStack` | `whole number` | `3` |
+| `beltGap` | `duration, e.g. "1500ms" / "2s"` | `1s` |
+| `consumableBuys` | `whole number` | `2` |
+| `consumableStock` | `whole number` | `3` |
+| `rareConsumableChance` | `number` | `0.25` |
 | `damageVariance` | `number` | `0.0` |
 | `armorCap` | `number` | `0.8` |
 | `armorK` | `number` | `0.0` |
@@ -332,8 +344,8 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `gunMuzzleSide` | `number` | `0.65` |
 | `gunMuzzleForward` | `number` | `0.34` |
 | `orb` | `OrbDef` | `OrbDef(orbitRadius=1.6, spin=6.0, damage=4, hitRadius=0.6, hitCadence=250ms)` |
-| `xp` | `XpDef` | `XpDef(baseXp=5, perLevel=4)` |
-| `skillShop` | `SkillShopDef` | `SkillShopDef(levels=[5, 12], repeatFrom=20, repeatEvery=10)` |
+| `xp` | `XpDef` | `XpDef(baseXp=5, perLevel=4, growth=1.0)` |
+| `skillShop` | `SkillShopDef` | `SkillShopDef(levels=[5, 12], repeatFrom=20, repeatEvery=10, payloadsWhenFull=false)` |
 | `itemShop` | `ItemShopDef` | `ItemShopDef(levels=[2], from=2, every=2)` |
 | `draftMomentum` | `number` | `1.0` |
 | `draftOptions` | `whole number` | `3` |
@@ -349,6 +361,8 @@ Authoring `phases` replaces the boss's built-in script entirely.
 | `modes` | `ItemModes` | `ItemModes(weapon=null)` |
 | `hooks` | `list` | `[]` |
 | `payloads` | `list` | `[]` |
+| `live` | `list` | `[]` |
+| `turretType` | `text` | `""` |
 | `artefact` | `true / false` | `false` |
 | `tokenCost` | `whole number` | `0` |
 | `prereqs` | `list` | `[]` |
@@ -380,6 +394,9 @@ With `effect: SCRIPT`, `script` names a Lua function as `"<mod folder>:<function
 | `damage` | `number` | — |
 | `radius` | `number` | — |
 | `script` | `text` | — |
+| `perSecond` | `number` | — |
+| `powerExponent` | `number` | — |
+| `chance` | `number` | — |
 
 ## heroes.yaml
 
@@ -396,7 +413,7 @@ Use `startItems+` (with the `+`) to ADD starting items rather than replace them.
 | `skills` | `list` | `[]` |
 | `startItems` | `list` | `[]` |
 | `maxHealth` | `whole number` | — |
-| `growth` | `GrowthDef` | `GrowthDef(maxHealth=0.0, regen=0.0, armor=0.0, damage=0.0, attackSpeed=0.0, area=0.0, crit=0.0, moveSpeed=0.0, magnet=0.0, skillDamage=0.0, skillSize=0.0, skillHaste=0.0, skillDuration=0.0)` |
+| `growth` | `GrowthDef` | `GrowthDef(maxHealth=0.0, regen=0.0, armor=0.0, damage=0.0, attackSpeed=0.0, area=0.0, crit=0.0, moveSpeed=0.0, magnet=0.0, skillDamage=0.0, skillSize=0.0, skillHaste=0.0, skillDuration=0.0, luck=0.0)` |
 | `passiveLimit` | `whole number` | `4` |
 | `turretMultishotFraction` | `number` | `0.33333334` |
 | `multishotBoltValue` | `number` | `0.35` |
@@ -422,7 +439,7 @@ One entry per biome id (`wasteland`, `blood_forest`, `swamp`, `forest`, `overgro
 | `minDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge ceiling: the soonest the boss can arrive. For this long the gauge can climb no faster than the clock, so no build can rush the phase spine by killing faster. Your first phase's `until` × this is how long the opener lasts. `"0s"` = off. |
 | `maxDuration` | `duration, e.g. "1500ms" / "2s"` | `0s` | Gauge floor: the latest the boss can arrive. The gauge is dragged up to at least `elapsed / this`, so a run that stalls still resolves in a boss fight. `"0s"` = off (no deadline). |
 | `thresholdScale` | `number` | `1.0` | Multiplies the level's `bossThreshold` for this biome — how much killing the boss fight costs here. |
-| `xpScale` | `number` | `1.0` | Multiplies all creep XP on this biome's levels — the knob for how fast the hero levels here. 1 = unchanged. |
+| `xpScale` | `number` | `1.0` | Legacy: multiplies all creep XP on this biome's levels. Prefer the XP curve (`player.xp`: `baseXp`, `perLevel`, `growth`), which raises the XP needed per level instead of shrinking the XP earned. 1 = unchanged. |
 | `waterBlocks` | `true / false` | `false` | Water blocks the player and ground creeps (flyers cross it); the plank bridges are the only way over. false = water only slows. |
 | `dashCrossesGaps` | `true / false` | `false` | With waterBlocks: a dash that would land on ground crosses a water gap. false = water stops dashes too. |
 | `scroll` | `ScrollDef` | — | Makes the corridor scroll on its own (an autoscroller): the shared window, its speed, and what its back edge does. Omit = no scrolling. |
@@ -434,6 +451,7 @@ One entry per biome id (`wasteland`, `blood_forest`, `swamp`, `forest`, `overgro
 | `bossHp` | `number` | `1.0` | Multiplies this biome's boss HP (on top of the usual depth scaling). 1 = as-is. |
 | `bossDamage` | `number` | `1.0` | Multiplies this biome's boss outgoing damage. 1 = as-is. |
 | `bossBleedCap` | `number` | `0.0` | Caps the total bleed on this biome's boss at this share of its max HP per second, instead of the game-wide `effects.bossBleedCap`. 0 = the game-wide cap. |
+| `capstoneDraftPhases` | `list` | `[]` | Phases (0-based) whose start grants each player a capstone draft: earned EPIC/LEGENDARY items, no artefacts. Empty = none. |
 
 ### `biomes.<id>.phases[]`
 
@@ -450,6 +468,8 @@ The phase spine, in order — the active phase is the first whose `until` the ga
 | `label` | `text` | — | Name shown on the HUD timeline when the phase starts. Blank = not shown. |
 | `creepHp` | `number` | — | Multiplies the HP of creeps spawned during this phase (on top of the creep level). 1 = as-is. |
 | `creepDamage` | `number` | — | Multiplies the outgoing damage of creeps spawned during this phase. 1 = as-is. |
+| `baseHp` | `number` | — | Extra HP multiplier for plain creeps only (not elites or bosses), on top of `creepHp`. 1 = as-is. |
+| `baseDamage` | `number` | — | Extra damage multiplier for plain creeps only (not elites or bosses), on top of `creepDamage`. 1 = as-is. |
 
 ### `biomes.<id>.phases[].events`
 
