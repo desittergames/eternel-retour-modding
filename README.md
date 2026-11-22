@@ -68,6 +68,11 @@ Three ways, all equivalent:
 - **Copy** a `.zip` into `mods/` — it is unpacked on the next scan.
 - Unzip it into `mods/` yourself.
 
+On Steam there is a fourth: **subscribe** on the game's Steam Workshop page (`B` / `Select` in the Mods manager
+opens it). Steam downloads the mod and keeps it updated; it shows in the Mods manager with a **WORKSHOP** tag.
+Unsubscribe and it is gone. To share your own mod this way, see
+[Sharing your mod on the Steam Workshop](#10-sharing-your-mod-on-the-steam-workshop).
+
 In the Mods manager, **`O`** (or **`Y`** on a pad, or the folder icon) opens the `mods/` folder. If you add a
 mod while the game is running, it appears when you alt-tab back — no need to reopen the panel.
 
@@ -85,6 +90,8 @@ The Mods manager lists every mod it found.
 | **Reorder** | `←`/`→`, or drag the row with the mouse |
 | **Apply now** | `R` / `X` |
 | **Open folder** | `O` / `Y` |
+| **Publish to the Workshop** (Steam) | `P` / `RB` — see [section 10](#10-sharing-your-mod-on-the-steam-workshop) |
+| **Open the Workshop** (Steam) | `B` / `Select` — the selected mod's page if it has one |
 
 **Order is priority, and later wins.** If two mods change the same thing, the one further down the list wins.
 
@@ -418,6 +425,67 @@ evidence that survives — put one in early.
 | Boss phase does nothing | Projectile actions with no `projectileAttack` on the boss |
 | Your item has no name | No `i18n/strings.xml` entry for `item.<id>.name` |
 | Two mods fight | Load order — the lower one wins. Reorder them |
+
+---
+
+## 10. Sharing your mod on the Steam Workshop
+
+If you play on Steam, you can publish a mod straight from the game — no website upload, no separate tool.
+
+### Publishing
+
+1. Your mod must be a folder in your `mods/` folder. Mods you subscribed to belong to their author and can't
+   be published.
+2. In **Options → Mods**, select it and press **`P`** (**`RB`** on a pad).
+3. Pick a **visibility** with `←`/`→`: **Private** (only you), **Friends only**, or **Public**. A new item
+   starts on Private, so nothing goes public by accident.
+4. Press **`Enter`** / **`A`** to upload. **`H`** / **`LB`** opens the Steam Workshop terms — submitting an item
+   means agreeing to them.
+
+When the upload finishes, the item's page opens in the Steam overlay. **On your first upload, accept the
+Workshop agreement there** — until you do, the item stays hidden from everyone but you. New items also go
+through Steam's automatic content check, which hides them for a few minutes.
+
+### What gets uploaded
+
+| | |
+|---|---|
+| **Files** | the **whole mod folder**, as it is — leave out test files and anything you don't mean to share |
+| **Title** | `name:` from `mod.yaml` |
+| **Description** | `description:` from `mod.yaml` |
+| **Preview image** | `preview.png` or `preview.jpg` in the mod folder, **under 1 MB** (optional) |
+| **Change note** | `v` + `version:` from `mod.yaml` |
+
+The title and description are rewritten from `mod.yaml` **every time you publish**, so edit them there, not on
+the Steam page. Screenshots, videos and tags are added on the Steam page and are left alone.
+
+### Updating
+
+The first upload writes a line into your `mod.yaml`:
+
+```yaml
+workshopId: 3843870241
+```
+
+**Keep it.** It is how the next publish knows to update that item instead of creating a new one. To update,
+change your files, raise `version:`, and press `P` again — visibility now starts on **Keep current**.
+Subscribers get the update the next time Steam syncs.
+
+- To publish a **separate** item from a copy of a mod, delete the `workshopId:` line in the copy first.
+- If you subscribe to your own item, the Mods manager shows only your local folder while it is there, so the
+  mod never loads twice.
+
+### Workshop mods in play
+
+A subscribed mod behaves like one you installed by hand: it arrives **off**, you turn it on and order it in
+the Mods manager, and its scripts run under the same sandbox. Everything in this guide applies to it.
+
+| Message | What to do |
+|---|---|
+| *Only your own mods, in the mods folder, can be published.* | The selected row is a subscribed mod. Copy it into `mods/` only if its licence allows, and remove its `workshopId:` |
+| *Publish failed: not your Workshop item* | The `workshopId:` belongs to someone else's item — delete the line to publish as new |
+| *Publish failed: Workshop item gone* | The item was deleted on Steam — delete the line to publish again |
+| No `P` / `B` prompts in the Mods manager | The game isn't running through Steam |
 
 ---
 
